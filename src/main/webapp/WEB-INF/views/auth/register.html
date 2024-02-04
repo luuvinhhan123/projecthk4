@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    .registration-form {
+      width: 100%;
+      max-width: 400px;
+      padding: 15px;
+      margin: auto;
+    }
+
+    .registration-form .form-control {
+      position: relative;
+      box-sizing: border-box;
+      height: auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .registration-form .form-control:focus {
+      z-index: 2;
+    }
+
+    .registration-form input[type="text"],
+    .registration-form input[type="email"],
+    .registration-form input[type="password"] {
+      margin-bottom: 10px;
+    }
+
+    .registration-form button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="registration-form">
+  <h2 class="text-center mb-4">Registration</h2>
+  <!--/*@thymesVar id="user" type=""*/-->
+  <form method="post" role="form" th:action="@{/auth/register}" th:object="${user}">
+    <div class="form-group">
+      <label for="firstname">First Name</label>
+      <input type="text" class="form-control" th:field="*{firstname}" placeholder="Enter your first name" required>
+    </div>
+    <div class="form-group">
+      <label for="lastname">Last Name</label>
+      <input type="text" class="form-control" th:field="*{lastname}" placeholder="Enter your last name" required>
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber">PhoneNumber</label>
+      <input type="number" class="form-control" th:field="*{phoneNumber}" placeholder="Enter your phoneNumber" required>
+    </div>
+    <div class="form-group">
+      <label for="email">email</label>
+      <input type="email" class="form-control" th:field="*{email}" placeholder="Enter your email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" th:field="*{password}" placeholder="Enter your password" required>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Register</button>
+  </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
