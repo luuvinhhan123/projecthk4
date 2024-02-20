@@ -8,15 +8,15 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "products")
-@Data
+//@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -25,11 +25,11 @@ public class Product {
     @Column(name="id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "special_category_id", referencedColumnName = "id")
     private SpecialCategory specialCategory;
 
@@ -67,11 +67,6 @@ public class Product {
     @Max(value = 100, message = "Product discount must be less than 100")
     @Column(nullable = false)
     private float discount;
-
-    @Nullable
-    @Min(value = 0, message = "Special Price must be greater than 0")
-    @Column(nullable = true, name = "special_price")
-    private double specialPrice;
 
     @Column(name = "view_number", nullable = false)
     private int viewNumber = 0;

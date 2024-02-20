@@ -61,8 +61,9 @@ public class ApiSecurityConfig {
 
 						//user manager
 						.requestMatchers("/admin/**").permitAll()
+								.requestMatchers("/api/v1/**").permitAll()
 
-						.anyRequest().authenticated()
+						.anyRequest().permitAll()
 				)
 				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
