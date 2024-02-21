@@ -6,7 +6,10 @@ import lombok.Data;
 
 @Data
 public class SignUpRequest {
+	@NotEmpty(message = "password is not empty")
 	private String firstName;
+
+	@NotEmpty(message = "password is not empty")
 	private String lastName;
 
 	@NotEmpty(message = "email is not empty")
@@ -15,4 +18,7 @@ public class SignUpRequest {
 
 	@NotEmpty(message = "password is not empty")
 	private String password;
+
+	@NotEmpty(message = "Phone is not empty")
+	private String phone;
 }

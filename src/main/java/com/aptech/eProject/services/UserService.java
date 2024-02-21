@@ -2,6 +2,7 @@ package com.aptech.eProject.services;
 
 import com.aptech.eProject.mails.MailUserVerificationCode;
 import com.aptech.eProject.models.Profile;
+import com.aptech.eProject.models.Role;
 import com.aptech.eProject.models.User;
 import com.aptech.eProject.models.Verify;
 import com.aptech.eProject.repositories.UserRepository;
@@ -9,6 +10,7 @@ import com.aptech.eProject.repositories.VerifyRepository;
 import com.aptech.eProject.requests.auth.LoginRequest;
 import com.aptech.eProject.requests.auth.SignUpRequest;
 import com.aptech.eProject.responses.auth.AuthResponse;
+import com.aptech.eProject.types.RoleType;
 import com.aptech.eProject.utils.JwtUtil;
 import com.aptech.eProject.utils.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +37,9 @@ public class UserService {
 
 	@Autowired
 	private VerifyRepository verifyRepository;
+
+	@Autowired
+	private RoleService roleService;
 
 	@Autowired
 	JwtUtil jwtUtil;
@@ -101,8 +107,10 @@ public class UserService {
 			verifyRepository.save(verifiedToken);
 			String code = verifiedToken.getCode();
 			ModelMapperUtil<User, SignUpRequest> mapper = new ModelMapperUtil<>();
+			Role role = roleService.findRoleByName(RoleType.USER.toString());
 			user = mapper.mapToModel(signupRequest, new User());
 			user.setVerified(false);
+			user.setRole(RoleType.USER);
 			mailUserVerificationCode.sendMail(user.getEmail(), signupRequest.getFirstName() + signupRequest.getLastName(), code);
 
 			return userRepository.save(user);
