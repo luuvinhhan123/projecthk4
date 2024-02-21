@@ -3,10 +3,14 @@ package com.aptech.eProject.services;
 import com.aptech.eProject.mails.MailUserVerificationCode;
 import com.aptech.eProject.models.Profile;
 import com.aptech.eProject.models.User;
+import com.aptech.eProject.models.Verify;
 import com.aptech.eProject.repositories.UserRepository;
+import com.aptech.eProject.repositories.VerifyRepository;
 import com.aptech.eProject.requests.auth.LoginRequest;
+import com.aptech.eProject.requests.auth.SignUpRequest;
 import com.aptech.eProject.responses.auth.AuthResponse;
 import com.aptech.eProject.utils.JwtUtil;
+import com.aptech.eProject.utils.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +33,9 @@ public class UserService {
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
+	private VerifyRepository verifyRepository;
+
+	@Autowired
 	JwtUtil jwtUtil;
 
 	@Autowired
@@ -49,6 +56,7 @@ public class UserService {
 		}
 		return user;
 	}
+
 	public void createUser(User user) {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -56,7 +64,7 @@ public class UserService {
 /*		ModelMapperUtil<User, SignUpRequest> mapper = new ModelMapperUtil<>();
 		User user = mapper.mapToModel(new SignUpRequest(), new User());*/
 
-	/*	mailUserVerificationCode.sendMail(user.getEmail(), "code");*/
+		/*	mailUserVerificationCode.sendMail(user.getEmail(), "code");*/
 
 		userRepository.save(user);
 	}
@@ -83,5 +91,43 @@ public class UserService {
 
 	public void delete(Integer userId) {
 		userRepository.deleteById(userId);
+	}
+
+	public User signUpUser(SignUpRequest signupRequest) {
+		User user = new User();
+		try {
+			signupRequest.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+			Verify verifiedToken = new Verify(signupRequest.getEmail());
+			verifyRepository.save(verifiedToken);
+			String code = verifiedToken.getCode();
+			ModelMapperUtil<User, SignUpRequest> mapper = new ModelMapperUtil<>();
+			user = mapper.mapToModel(signupRequest, new User());
+			user.setVerified(false);
+			mailUserVerificationCode.sendMail(user.getEmail(), signupRequest.getFirstName() + signupRequest.getLastName(), code);
+
+			return userRepository.save(user);
+
+		} catch (Exception exception) {
+
+		}
+
+		return user;
+	}
+
+	/**
+	 * Verify user
+	 *
+	 * @param email
+	 * @return
+	 */
+	public User verifyUser(String email) {
+		User user = userRepository.findByEmail(email);
+		if (user != null && !user.isVerified()) {
+			user.setVerified(true);
+			userRepository.save(user);
+
+			return user;
+		}
+		return null;
 	}
 }

@@ -1,6 +1,6 @@
 package com.aptech.eProject.controllers.client;
 
-import com.aptech.eProject.controllers.ApiController;
+import com.aptech.eProject.controllers.api.ApiController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

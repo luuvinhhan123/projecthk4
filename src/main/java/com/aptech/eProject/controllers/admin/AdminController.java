@@ -56,8 +56,8 @@ public class AdminController {
             return "admin/usermanager/edit";
         }
         assert existingUser != null;
-        existingUser.setFirstname(user.getFirstname());
-        existingUser.setLastname(user.getLastname());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
         existingUser.setRoles(user.getRoles());
         existingUser.setProfile(user.getProfile());
 

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,17 +20,17 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "tbl_users")
 @Where(clause = "deleted_at is null")
 public class User extends Model {
-    @Column(name = "firstname", nullable = false)
-    private String firstname;
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
 
-    @Column(name = "lastname", nullable = false)
-    private String lastname;
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
 
-    @Column(name = "phonenumber", nullable = false)
-    private String phonenumber;
+    @Column(name = "phone")
+    private String phone;
 
     @Email
     @Column(name = "email", unique = true, nullable = false)
@@ -38,10 +39,11 @@ public class User extends Model {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = true)
+    @Column(name = "role")
     private RoleType role;
 
-    @Column(name = "is_verified", nullable = true)
+    @Value("true")
+    @Column(name = "is_verified")
     private boolean isVerified;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

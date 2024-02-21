@@ -1,4 +1,4 @@
-package com.aptech.eProject.controllers;
+package com.aptech.eProject.controllers.api;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
